@@ -2,6 +2,10 @@ import tkinter as tk
 from map_generator import Map
 
 def Visualization(map, path=None, smallest=None):
+    if type(path) == ValueError:
+        print('No path exists')
+        return False
+
     root = tk.Tk()
     root.title('Map')
     size = len(map[0]) * 20

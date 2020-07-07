@@ -20,6 +20,9 @@ def AStar(map, start, end):
     come_from = {}
 
     while open_set is not []:
+        if not f_score:
+            break
+
         l = list(f_score.values())
         l.sort()
         smallest_value = l[0]
@@ -39,7 +42,7 @@ def AStar(map, start, end):
         for neigh in neighbours(smallest_f, map):
             if neigh in closed_set:
                 continue
-            current_g_score = g_score[start] + distance(smallest_f, neigh)
+            current_g_score = g_score[smallest_f] + distance(smallest_f, neigh)
             #print(f'{neigh} => {smallest_f}: {current_g_score}')
 
             if not neigh in open_set:
@@ -105,4 +108,4 @@ def distance(current, end):
 
 if __name__ == '__main__':
     map1 = Map(30)
-    Visualization(map1.map, find_path(map1.map))
+    Visualization(map1.map, path=find_path(map1.map))
