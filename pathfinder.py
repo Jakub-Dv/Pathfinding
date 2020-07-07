@@ -2,13 +2,11 @@ from map_generator import Map
 from window import Visualization
 
 
-def find_path(map, start=None, end=None):
-    if start is None:
-        start = (0, 0)
-    if end is None:
-        end = (len(map[0]) - 1, len(map[0]) - 1)
+def find_path(map):
 
-    return AStar(map, start, end)
+    start = map.start
+    end = map.end
+    return AStar(map.map, start, end)
 
 
 def AStar(map, start, end):
@@ -107,5 +105,5 @@ def distance(current, end):
 
 
 if __name__ == '__main__':
-    map1 = Map(30)
-    Visualization(map1.map, path=find_path(map1.map))
+    map1 = Map(150, (25, 36), (25, 148))
+    Visualization(map1, path=find_path(map1))
