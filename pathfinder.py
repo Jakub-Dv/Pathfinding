@@ -80,20 +80,20 @@ def neighbours(current, map):
     l = len(map[0])
     if current[0] - 1 >= 0 and map[current[0] - 1][current[1]]:
         yield current[0] - 1, current[1]
-    if current[0] - 1 >= 0 and current[1] - 1 >= 0 and map[current[0] - 1][current[1] - 1]:
-        yield current[0] - 1, current[1] - 1
+    #if current[0] - 1 >= 0 and current[1] - 1 >= 0 and map[current[0] - 1][current[1] - 1]:
+        #yield current[0] - 1, current[1] - 1
     if current[1] - 1 >= 0 and map[current[0]][current[1] - 1]:
         yield current[0], current[1] - 1
-    if current[0] + 1 < l and current[1] - 1 >= 0 and map[current[0] + 1][current[1] - 1]:
-        yield current[0] + 1, current[1] - 1
+    #if current[0] + 1 < l and current[1] - 1 >= 0 and map[current[0] + 1][current[1] - 1]:
+        #yield current[0] + 1, current[1] - 1
     if current[0] + 1 < l and map[current[0] + 1][current[1]]:
         yield current[0] + 1, current[1]
-    if current[0] + 1 < l and current[1] + 1 < l and map[current[0] + 1][current[1] + 1]:
-        yield current[0] + 1, current[1] + 1
+    #if current[0] + 1 < l and current[1] + 1 < l and map[current[0] + 1][current[1] + 1]:
+        #yield current[0] + 1, current[1] + 1
     if current[1] + 1 < l and map[current[0]][current[1] + 1]:
         yield current[0], current[1] + 1
-    if current[0] - 1 >= 0 and current[1] + 1 < l and map[current[0] - 1][current[1] + 1]:
-        yield current[0] - 1, current[1] + 1
+    #if current[0] - 1 >= 0 and current[1] + 1 < l and map[current[0] - 1][current[1] + 1]:
+        #yield current[0] - 1, current[1] + 1
 
 
 def distance(current, end):
@@ -105,5 +105,5 @@ def distance(current, end):
 
 
 if __name__ == '__main__':
-    map1 = Map(150, (25, 36), (25, 148))
+    map1 = Map(40, random=False)
     Visualization(map1, path=find_path(map1))

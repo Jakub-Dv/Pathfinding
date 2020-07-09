@@ -1,5 +1,9 @@
 from random import choice
 from collections import defaultdict
+from sys import setrecursionlimit
+
+setrecursionlimit(10000)
+
 
 
 class Map:
@@ -9,13 +13,17 @@ class Map:
         if end is None:
             end = (size - 1, size - 1)
 
+        self.start = start
+        self.end = end
+
         if random:
             self.map = [[choice((1, 1, 1, 1, 1, 0, 0)) for num in range(size)] for num in range(size)]
         else:
             self.map = [[0 for num in range(size)] for num in range(size)]
+            Maze_builder(self)
+            self.map[list(start)[0]][list(start)[1]] = 1
+            self.map[list(end)[0]][list(end)[1]] = 1
 
-        self.start = start
-        self.end = end
 
     def __repr__(self):
         text = ''
@@ -29,11 +37,9 @@ class Map:
         return text
 
 
-def Maze_builder(size, start=None, end=None):
-
-    grid = Map(size, start, end, random=False)
+def Maze_builder(grid):
     fn(grid, grid.start)
-    print(grid)
+
 
 
 def fn(grid, current, opened=defaultdict(list), come_from=None):
@@ -42,16 +48,13 @@ def fn(grid, current, opened=defaultdict(list), come_from=None):
 
     y, x = current
     grid.map[y][x] = 1
-    print(grid)
-    if opened.get(current) is None:
-        for neigh in neighbours_for_maze(grid.map, current):
-            if try_next(grid.map, current, neigh):
-                opened[current].append(neigh)
+    opened[current] = []
+    for neigh in neighbours_for_maze(grid.map, current):
+        if try_next(grid.map, current, neigh):
+            opened[current].append(neigh)
 
     if not opened[current] == []:
         next_path = choice(opened[current])
-        while not try_next(grid.map, current, next_path):
-            next_path = choice(opened[current])
         come_from[next_path] = current
         for i, item in enumerate(opened[current]):
             if next_path == item:
@@ -60,7 +63,7 @@ def fn(grid, current, opened=defaultdict(list), come_from=None):
 
     else:
         next_path = come_from[current]
-    print(f'{current}: {next_path}')
+
     if not next_path == current:
         fn(grid, next_path, opened, come_from)
 
@@ -128,6 +131,6 @@ def try_next(grid, current, next_path):
 
 
 if __name__ == '__main__':
-    Maze_builder(10)
+    Maze_builder(40)
 
 
