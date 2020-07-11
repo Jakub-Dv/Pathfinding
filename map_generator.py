@@ -2,8 +2,7 @@ from random import choice
 from collections import defaultdict
 from sys import setrecursionlimit
 
-setrecursionlimit(10000)
-
+setrecursionlimit(5000)
 
 
 class Map:
@@ -46,6 +45,7 @@ def fn(grid, current, opened=defaultdict(list), come_from=None):
     if come_from is None:
         come_from = {current: current}
 
+
     y, x = current
     grid.map[y][x] = 1
     opened[current] = []
@@ -64,8 +64,11 @@ def fn(grid, current, opened=defaultdict(list), come_from=None):
     else:
         next_path = come_from[current]
 
+
     if not next_path == current:
         fn(grid, next_path, opened, come_from)
+
+
 
 
 def neighbours_for_maze(grid, position):

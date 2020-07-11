@@ -1,47 +1,57 @@
 import tkinter as tk
 from map_generator import Map
+from pathfinder import AStar
 
-def Visualization(map, path=None, smallest=None):
-    if type(path) == ValueError:
-        print('No path exists')
-        return False
 
-    root = tk.Tk()
-    root.title('Map')
-    if len(map.map[0]) <= 25:
-        size = len(map.map[0]) * 20
-    elif len(map.map[0]) <= 50:
-        size = len(map.map[0]) * 15
-    elif len(map.map[0]) <= 100:
-        size = len(map.map[0]) * 10
-    else:
-        size = len(map.map[0]) * 5
+class GUI:
+    def __init__(self, root):
+        self.root = root
+        root.title('Map')
+        self.map = []
 
-    root.geometry(f'{size}x{size}')
-    canvas = tk.Canvas(root, width=size, height=size)
+        self.canvas = tk.Canvas(self.root, width=800, height=800)
+        self.canvas.pack(side='right', fill='both')
 
-    size_of_block = size / len(map.map[0])
-    if path:
-        for p in path:
-            canvas.create_rectangle(p[1] * size_of_block, p[0] * size_of_block, (p[1] + 1) * size_of_block, (p[0] + 1) * size_of_block, fill='blue')
+        self.create_map_button = tk.Button(width=20, height=3, text='Generate Maze', command=self.generate_maze)
+        self.create_map_button.pack(pady=10)
 
-    for i, block in enumerate(map.map):
-        for j, num in enumerate(block):
-            if not num:
-                canvas.create_rectangle(j * size_of_block, i * size_of_block, (j + 1) * size_of_block, (i + 1) * size_of_block, fill='red')
+        self.solve_map_button = tk.Button(width=20, height=3, text='Solve Maze', command=self.solve_map)
+        self.solve_map_button.pack(pady=20)
 
-    if smallest:
-        canvas.create_rectangle(list(smallest)[1] * size_of_block, list(smallest)[0] * size_of_block, (list(smallest)[1] + 1) * size_of_block, (list(smallest)[0] + 1) * size_of_block, fill='violet')
+        self.clear_button = tk.Button(width=20, height=3, text='Clear board', command=self.clear_board)
+        self.clear_button.pack(pady=20)
 
-    if map.start:
-        canvas.create_rectangle(list(map.start)[1] * size_of_block, list(map.start)[0] * size_of_block, (list(map.start)[1] + 1) * size_of_block, (list(map.start)[0] + 1) * size_of_block, fill='green')
-    if map.end:
-        canvas.create_rectangle(list(map.end)[1] * size_of_block, list(map.end)[0] * size_of_block, (list(map.end)[1] + 1) * size_of_block, (list(map.end)[0] + 1) * size_of_block, fill='yellow')
+        self.quit_gui = tk.Button(width=20, height=3, text='Exit', command=self.root.quit)
+        self.quit_gui.pack(side='bottom', pady=30)
 
-    canvas.pack()
-    root.mainloop()
+    def generate_maze(self):
+        self.canvas.create_rectangle(0, 0, 800, 800, fill='white')
+        self.map = Map(40, random=False)
+        for i, block in enumerate(self.map.map):
+            for j, num in enumerate(block):
+                if not num:
+                    self.canvas.create_rectangle(j * 20, i * 20, (j + 1) * 20, (i + 1) * 20, fill='red')
+
+        if self.map.start:
+            self.canvas.create_rectangle(list(self.map.start)[1] * 20, list(self.map.start)[0] * 20, (list(self.map.start)[1] + 1) * 20, (list(self.map.start)[0] + 1) * 20, fill='green')
+        if self.map.end:
+            self.canvas.create_rectangle(list(self.map.end)[1] * 20, list(self.map.end)[0] * 20, (list(self.map.end)[1] + 1) * 20, (list(self.map.end)[0] + 1) * 20, fill='yellow')
+
+
+    def solve_map(self):
+        if not self.map == []:
+            path = AStar(self.map.map, self.map.start, self.map.end)
+            if path:
+                for p in path:
+                    if not p == self.map.end and not p == self.map.start:
+                        self.canvas.create_rectangle(p[1] * 20, p[0] * 20, (p[1] + 1) * 20, (p[0] + 1) * 20, fill='blue')
+
+    def clear_board(self):
+        self.map = []
+        self.canvas.delete('all')
 
 
 if __name__ == '__main__':
-    map1 = Map(100)
-    Visualization(map1)
+    root = tk.Tk()
+    g = GUI(root)
+    root.mainloop()

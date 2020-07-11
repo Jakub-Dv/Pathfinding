@@ -1,5 +1,5 @@
 from map_generator import Map
-from window import Visualization
+
 
 
 def find_path(map):
@@ -106,4 +106,3 @@ def distance(current, end):
 
 if __name__ == '__main__':
     map1 = Map(40, random=False)
-    Visualization(map1, path=find_path(map1))
