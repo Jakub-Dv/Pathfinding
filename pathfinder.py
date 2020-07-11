@@ -62,7 +62,7 @@ def AStar(map, start, end):
                 f_score[neigh] = g_score[neigh] + h_score[neigh]
         #print(come_from)
 
-    return ValueError('No path exists')
+    raise ValueError('No path exists')
 
 
 

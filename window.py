@@ -40,8 +40,13 @@ class GUI:
 
     def solve_map(self):
         if not self.map == []:
-            path = AStar(self.map.map, self.map.start, self.map.end)
-            if path:
+            try:
+                path = AStar(self.map.map, self.map.start, self.map.end)
+            except ValueError:
+                print('No path Exists')
+                return
+
+            else:
                 for p in path:
                     if not p == self.map.end and not p == self.map.start:
                         self.canvas.create_rectangle(p[1] * 20, p[0] * 20, (p[1] + 1) * 20, (p[0] + 1) * 20, fill='blue')
